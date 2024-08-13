@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      button,
+      input submit {
+        color: white;
+        background-color: blue;
+        border: 2px bold black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="heading">This is Sample Text</h1>
+    <h2 id="h2tag">This is Heading two</h2>
+
+    <input type="text" id="input_id" placeholder="Enter You Name" />
+    <button type="submit" onclick="changeDefault()">Default</button>
+    <button type="submit" onclick="changeText()">Batman</button>
+  </body>
+  <script>
+    function changeText() {
+      let val = document.getElementById("input_id").value;
+      if (val == "") {
+        alert("Enter a Name in the Input Field");
+      } else {
+        console.log(val);
+        document.getElementById("heading").innerHTML = val + " is Batman";
+        document.getElementById("h2tag").innerHTML = "Saving Chennai City";
+      }
+    }
+    function changeDefault() {
+      let val = document.getElementById("input_id").value;
+      console.log(val);
+      document.getElementById("heading").innerHTML = "This is Sample Text";
+      document.getElementById("h2tag").innerHTML = "This is Heading two";
+    }
+  </script>
+</html>
