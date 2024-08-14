@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h2 {
+        color: gold;
+      }
+      h2:hover {
+        color: silver;
+      }
+    </style>
+  </head>
+  <body>
+    <h2 id="val"></h2>
+    <h2 id="filter"></h2>
+    <h2 id="multiplied"></h2>
+    <h2 id="chain"></h2>
+  </body>
+  <script>
+    // let name = ["akash", "pandiya", "gunasekar", "silpha"];
+    // console.log(name);
+    // console.log(name.length);
+    // console.log(name[2]);
+    // name.push("senthil");
+    // name.unshift("rajan");
+    // name[4] = "kuamri";
+    // console.log(name);
+    // for (let i in name) {
+    //   if (name[i].startsWith("g")) {
+    //     console.log(i, name[i]);
+    //   }
+    // }
+    // ARRAY
+
+    // es6 filter
+    var num = [
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    ];
+    let filtered = num.filter((i) => {
+      return i % 2 == 0;
+    });
+
+    document.getElementById("val").innerHTML = "original " + num;
+    document.getElementById("filter").innerHTML = "filtered " + filtered;
+
+    // es6 map
+    var nummap = [
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    ];
+    multiplied = nummap.map((i) => i * 2);
+    document.getElementById("multiplied").innerHTML =
+      "multiplied " + multiplied;
+
+    let chaining = num
+      .filter((i) => {
+        return i % 2 == 0;
+      })
+      .map((i) => {
+        return i * 2;
+      });
+    document.getElementById("chain").innerHTML = "chained " + chaining;
+  </script>
+</html>

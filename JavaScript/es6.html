@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="txt" />
+    <button id="but">Click Me..</button>
+    <h2 id="inputtxt"></h2>
+    <br /><br />
+    <select id="options">
+      <option value="Batman Gopi">Batman Gopi</option>
+      <option value="Joshva">Joshva</option>
+      <option value="Beast Nithish">Beast Nithish</option>
+      <option value="Hacker Sathish">Hacker Sathish</option>
+    </select>
+    <h2 id="Result"></h2>
+  </body>
+  <script>
+    document.getElementById("but").addEventListener("click", () => {
+      let val = document.getElementById("txt").value;
+      document.getElementById("inputtxt").innerHTML = val;
+      console.log(val);
+    });
+
+    // document.getElementById("options").addEventListener("change", () => {
+    //   let val = document.getElementById("options").value;
+    //   document.getElementById("Result").innerHTML = val;
+    //   console.log(val);
+    // });
+    document.getElementById("options").addEventListener("change", (e) => {
+      document.getElementById("Result").innerHTML = e.target.value;
+      console.log(e.target.value);
+    });
+  </script>
+</html>
