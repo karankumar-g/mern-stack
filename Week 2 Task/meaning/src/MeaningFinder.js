@@ -92,14 +92,14 @@ const MeaningFinder = () => {
   return (
     <Container>
       <Content>
-        <Title>Meaning Finder</Title>
+        <Title>Age Prediction</Title>
         <Input
           type="text"
           placeholder="Enter a name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <Button onClick={handleFetch}>Find Meaning</Button>
+        <Button onClick={handleFetch}>Predict Age</Button>
         {responseData && (
           <Response>
             <p>
