@@ -42,4 +42,28 @@ app.post("/add", (request, response) => {
   }
 });
 
+const { MongoClient } = require("mongodb");
+
+// Connection URL
+const url = "mongodb+srv://karankumar:karan2909@cluster0.viptk.mongodb.net/";
+const client = new MongoClient(url);
+
+// Database Name
+const dbName = "office";
+
+app.post("/createTeacher", async (req, res) => {
+  let body = req.body;
+  let data = {
+    name: body["name"],
+    email: body["email"],
+    password: body["password"],
+    address: body["address"],
+    mobile_no: body["mobile_no"],
+  };
+  await client.connect();
+  let db = client.db("office");
+  await db.collection("teachers").insertOne(data);
+  res.status(200).json({ message: "Created New Teacher Record!!" });
+});
+
 app.listen(8080);
