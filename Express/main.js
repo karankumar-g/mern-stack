@@ -9,7 +9,7 @@ app.get("/", (request, response) => {
 app.post("/", (request, response) => {
   response.json({ message: "Batman Gopi" });
 });
-app.post("/login", (request, response) => {
+app.post("/logins", (request, response) => {
   // let email = request["query"]["email"];
   // let pass = request["query"]["password"];
   let { email, password } = request["query"];
@@ -64,6 +64,43 @@ app.post("/createTeacher", async (req, res) => {
   let db = client.db("office");
   await db.collection("teachers").insertOne(data);
   res.status(200).json({ message: "Created New Teacher Record!!" });
+});
+
+app.get("/listTeacher", async (req, res) => {
+  await client.connect();
+  let db = client.db("office");
+  const data = await db.collection("teachers").find({}).toArray();
+  res.status(200).json(data);
+});
+
+app.get("/listteacherbyname/:name", async (req, res) => {
+  await client.connect();
+  let { name } = req.params;
+  let db = client.db("office");
+  let list = await db.collection("teachers").find({ name: name }).toArray();
+  res.status(200).json(list);
+});
+
+app.post("/login", async (req, res) => {
+  await client.connect();
+  let { name, password } = req.body;
+  let db = client.db("office");
+  const teachers = await db
+    .collection("teachers")
+    .find({ name: name, password: password })
+    .toArray();
+  // const teacher = teachers[0];
+  // if (teacher.password === password) {
+  //   res.status(200).json({ message: "Login Successful" });
+  // } else {
+  //   res.status(401).json({ error: "Password incorrect" });
+  // }
+
+  if (teachers.length > 0) {
+    res.json({ message: "Login Successful" });
+  } else {
+    res.status(401).json({ error: "Password incorrect" });
+  }
 });
 
 app.listen(8080);
