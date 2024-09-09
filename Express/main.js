@@ -103,4 +103,40 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/filter", async (req, res) => {
+  await client.connect();
+  let db = client.db("office");
+  var filterList = {};
+  let { name, mobile, email } = req.query;
+
+  if (name != undefined) {
+    filterList["name"] = name;
+  } else if (mobile != undefined) {
+    filterList["phone"] = mobile;
+  } else if (email != undefined) {
+    filterList["email"] = email;
+  }
+
+  let list = await db.collection("employee").find(filterList).toArray();
+  res.json(list);
+});
+
+app.delete("/deleteUserByName", async (req, res) => {
+  await client.connect();
+  let db = client.db("office");
+  let { name } = req.query;
+  await db.collection("teachers").deleteOne({ name: name });
+  res.json({ msg: "user deleted" });
+});
+
+app.put("/updatepwd", async (req, res) => {
+  let { name, password } = req.query;
+  await client.connect();
+  let db = client.db("office");
+  await db
+    .collection("teachers")
+    .updateOne({ password: password }, { $set: { name: "name" } });
+  res.json({ msg: "Password is Updated" });
+});
+
 app.listen(8080);
