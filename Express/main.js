@@ -42,7 +42,7 @@ app.post("/add", (request, response) => {
   }
 });
 
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 // Connection URL
 const url = "mongodb+srv://karankumar:karan2909@cluster0.viptk.mongodb.net/";
@@ -135,8 +135,29 @@ app.put("/updatepwd", async (req, res) => {
   let db = client.db("office");
   await db
     .collection("teachers")
-    .updateOne({ password: password }, { $set: { name: "name" } });
-  res.json({ msg: "Password is Updated" });
+    .updateOne({ name: name }, { $set: { password: password } });
+  res.json({ msg: "Password is updated!!" });
+});
+
+app.post("/updateemail", async (req, res) => {
+  let { name, email } = req.body;
+  await client.connect();
+  let db = client.db("office");
+  await db
+    .collection("teachers")
+    .updateOne({ name: name }, { $set: { email: email } });
+  res.json({ msg: "email is updated!!" });
+});
+
+app.get("/getById", async (req, res) => {
+  let { id } = req.query;
+  await client.connect();
+  let db = client.db("office");
+  let data = await db
+    .collection("teachers")
+    .find({ _id: new ObjectId(id) })
+    .toArray();
+  res.json(data);
 });
 
 app.listen(8080);
