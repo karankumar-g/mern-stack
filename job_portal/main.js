@@ -3,6 +3,8 @@ var app = express();
 app.use(express.json());
 
 const { MongoClient, ObjectId } = require("mongodb");
+var cors = require("cors");
+app.use(cors());
 
 const url = "mongodb+srv://karankumar:karan2909@cluster0.viptk.mongodb.net/";
 const client = new MongoClient(url);
