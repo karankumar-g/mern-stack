@@ -15,7 +15,7 @@ app.post("/create_jobs", async (req, res) => {
   let body = req.body;
   let data = {
     name: body["name"],
-    comapny_name: body["company_name"],
+    company_name: body["company_name"],
     requirements: body["requirements"],
   };
   await client.connect();
@@ -32,22 +32,36 @@ app.get("/list_jobs", async (req, res) => {
   res.json(data);
 });
 
+// app.put("/update_job", async (req, res) => {
+//   let { name, requirements } = req.body;
+//   await client.connect();
+//   let db = client.db("office");
+//   await db
+//     .collection("jobportal")
+//     .updateOne({ name: name }, { $set: { requirements: requirements } });
+
+//   res.json({ msg: "Updated the requirements" });
+// });
+
 app.put("/update_job", async (req, res) => {
-  let { name, requirements } = req.body;
+  let { id, name, company, requirements } = req.body;
   await client.connect();
   let db = client.db("office");
-  await db
-    .collection("jobportal")
-    .updateOne({ name: name }, { $set: { requirements: requirements } });
+  await db.collection("jobportal").updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: { requirements: requirements, name: name, company_name: company },
+    }
+  );
 
   res.json({ msg: "Updated the requirements" });
 });
 
 app.delete("/delete_job", async (req, res) => {
-  let { name } = req.query;
+  let { id } = req.query;
   await client.connect();
   let db = client.db("office");
-  await db.collection("jobportal").deleteOne({ name: name });
+  await db.collection("jobportal").deleteOne({ _id: new ObjectId(id) });
 
   res.json({ msg: "Deleted the Job" });
 });

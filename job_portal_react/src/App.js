@@ -3,8 +3,10 @@ import React, { useRef, useState } from "react";
 
 function App() {
   const [joblist, setJobList] = useState([]);
+  const [matchid, setmatchId] = useState("");
   const nameRef = useRef();
-  const delnameRef = useRef();
+  const upnameRef = useRef();
+  const upreqRef = useRef();
   const cnameRef = useRef();
   const reqRef = useRef();
 
@@ -29,18 +31,65 @@ function App() {
     let json = await res.json();
     console.log(json);
     getData();
+    nameRef.current.value = "";
+    cnameRef.current.value = "";
+    reqRef.current.value = "";
   };
 
-  const deleteJob = async () => {
-    let name = delnameRef.current.value;
-
-    let res = await fetch(`http://localhost:8080/delete_job?name=${name}`, {
+  const deleteJob = async (id) => {
+    let res = await fetch(`http://localhost:8080/delete_job?id=${id}`, {
       method: "DELETE",
       headers: { "content-type": "application/json" },
     });
-    let json = await res.json();
-    alert(json["msg"]);
+    // let json = await res.json();
+    // alert(json["msg"]);
     getData();
+  };
+
+  // const updateJob = async () => {
+  //   let data = {
+  //     name: upnameRef.current.value,
+  //     requirements: upreqRef.current.value,
+  //   };
+  //   let res = await fetch("http://localhost:8080/update_job", {
+  //     method: "PUT",
+  //     body: JSON.stringify(data),
+  //     headers: { "content-type": "application/json" },
+  //   });
+  //   let json = await res.json();
+  //   console.log(json);
+  //   getData();
+  // };
+
+  const loadDataForUpdate = async (id) => {
+    let match = joblist.filter((j) => id === j._id);
+    console.log(match);
+    nameRef.current.value = match[0].name;
+    cnameRef.current.value = match[0].company_name;
+    reqRef.current.value = match[0].requirements;
+    setmatchId(match[0]._id);
+  };
+  const updateJob = async () => {
+    let name = nameRef.current.value;
+    let company = cnameRef.current.value;
+    let requirements = reqRef.current.value;
+    let id = matchid;
+
+    let data = {
+      id: id,
+      name: name,
+      company: company,
+      requirements: requirements,
+    };
+    let res = await fetch("http://localhost:8080/update_job", {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: { "content-type": "application/json" },
+    });
+    getData();
+    nameRef.current.value = "";
+    cnameRef.current.value = "";
+    reqRef.current.value = "";
   };
 
   return (
@@ -51,13 +100,21 @@ function App() {
       <div>
         {joblist.map((obj, index) => {
           return (
-            <h3 key={index}>
+            <p key={index}>
               <strong>Name : </strong>
               {obj.name}
               <br />
               <strong>Company Name : </strong>
-              {obj.comapny_name}
-            </h3>
+              {obj.company_name} <br />
+              <strong>Requirements : </strong>
+              {obj.requirements} <br />
+              <button onClick={() => deleteJob(obj._id)}>
+                Delete this Job
+              </button>
+              <button onClick={() => loadDataForUpdate(obj._id)}>
+                Load for Update
+              </button>
+            </p>
           );
         })}
       </div>
@@ -75,17 +132,23 @@ function App() {
         <div>
           <button onClick={createJob}>Add Job</button>
         </div>
+        <div>
+          <button onClick={updateJob}>Update Job</button>
+        </div>
       </div>
       <div>
-        <div>
-          <h2>DELETE FORM</h2>
+        {/* <div>
+          <h2>UPDATE FORM</h2>
         </div>
         <div>
-          <input type="name" ref={delnameRef} placeholder="Name"></input>
+          <input type="name" ref={upnameRef} placeholder="Name"></input>
         </div>
         <div>
-          <button onClick={deleteJob}>Delete Job</button>
+          <input type="name" ref={upreqRef} placeholder="Requirements"></input>
         </div>
+        <div>
+          <button onClick={updateJob}>Update Job</button>
+        </div> */}
       </div>
     </div>
   );
