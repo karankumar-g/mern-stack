@@ -2,6 +2,8 @@ var express = require("express");
 var app = express();
 app.use(express.json());
 
+const fileUpload = require("express-fileupload");
+
 const { MongoClient, ObjectId } = require("mongodb");
 var cors = require("cors");
 app.use(cors());
@@ -14,10 +16,16 @@ app.use("/api/", (req, res, next) => {
     if (jwt.verify(token, "SECRET")) {
       next();
     } else {
-      res.json({ msg: "Providre the Correct Token" });
+      res.json({ msg: "Provide the Correct Token " });
     }
   }
 }); // MIDDLEWARE
+
+app.use(
+  fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+  })
+);
 
 const url = "mongodb+srv://karankumar:karan2909@cluster0.viptk.mongodb.net/";
 const client = new MongoClient(url);
@@ -109,4 +117,16 @@ app.post("/register", async (req, res) => {
   await db.collection("teachers").insertOne(data);
   res.status(200).json({ message: "Created New Teacher Record!!" });
 });
+
+app.post("/upload", function (req, res) {
+  let file = req.files.img;
+  let uploadPath = __dirname + "/uploads/" + file.name;
+
+  file.mv(uploadPath, function (err) {
+    if (err) return res.status(500).send(err);
+
+    res.send("File Uploaded!");
+  });
+});
+
 app.listen(8080);
