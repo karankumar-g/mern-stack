@@ -23,6 +23,7 @@ export default function Login() {
       if (res.ok) {
         alert("You are Logged in Successfully");
         console.log(json["token"]);
+        localStorage.setItem("token", json["token"]);
       } else {
         alert("credentials are wrong");
       }
