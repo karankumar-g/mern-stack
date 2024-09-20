@@ -19,7 +19,7 @@ const About = () => {
   const [status, setStatus] = useState(true);
   return (
     <div>
-      <Header />
+      <Header currentPage="About" myName="Karan" />
       {status ? <p className="red">This is paragraph</p> : null}
       <h1>{counterVal}</h1>
       <br />

@@ -22,7 +22,7 @@ export default function Home() {
   };
   return (
     <div>
-      <Header />
+      <Header currentPage="Home" />
 
       <h1>{counterval}</h1>
       <br />

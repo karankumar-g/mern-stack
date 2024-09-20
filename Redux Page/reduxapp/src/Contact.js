@@ -16,7 +16,7 @@ const Contact = () => {
 
   return (
     <div>
-      <Header />
+      <Header currentPage="Contact" />
       <h1>{counterVal}</h1>
       <br />
       <input type="button" value="Add" onClick={add} />
